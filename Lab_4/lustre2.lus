@@ -1,0 +1,79 @@
+-- Command to run:: kind2 examples2.lus
+
+-- inc: determine whether counter should be incremented
+-- reset: reset the counter to zero
+node ResetCounter(inc, reset: bool) returns (n: int);
+let
+    -- n = if inc then (if reset then 0 else (pre n +1)) else n;
+    n = if reset then 0 else ((0 -> pre n) + (if inc then 1 else 0));
+tel
+
+
+-- A = 5 (cycles = ms)
+--B = 3 (cycles = ms)
+node MultiStateSwitch(key: bool) returns (off, on1, on2: bool);
+var n: int;
+let
+    n = ResetCounter(key, not key); -- count cycles the key was pressed
+    
+    off = n < 5; 
+    
+    on1 = n >= 5 and n<8;
+     
+    on2 = n>=8;
+    
+tel
+
+
+-- Synchronous observer for MultiStateSwitch
+node ReqMultiStateSwitch(key: bool) returns (ok1, ok2, ok3: bool); -- Initially show with two requirements (ok1, ok2)
+var off, on1, on2: bool;
+let
+    (off, on1, on2) = MultiStateSwitch(key);
+    -- Req1: outputs (on1/on2) and off are not true at the same time
+    ok1 = (on1 or on2) => not off; -- or can be written as not (on1 or on2) or (not off)
+
+    -- Req2: to produce one counterexample
+    -- ok2 = not on2;
+
+    -- Req2: on2 is true only if on1 was true sometime in the past
+    -- The following would consider the current cycle also (need to consider only "in the past")
+    ok2 = on2 => HasHappend(on1);
+    -- The following expression is appropriate as per the requirement
+    -- ok2 = on2 => (false -> pre HasHappend(on1));
+    
+    -- Req3: if on2 is true and pressed is not released, on2 stays true
+    ok3 = Since(on2,key) => on2; -- since on2 was true last time, key has been true then on2 is to be true in current cycle
+    --%PROPERTY ok1;
+    --%PROPERTY ok2;
+    --%PROPERTY ok3;
+    --%MAIN;
+tel
+
+
+-- y is true only if x has been since the start up of the program
+node Sofar(x: bool) returns (y: bool);
+let
+    y = x -> (x and pre y); -- also x and (true -> pre y)
+tel
+
+-- y is true only if x was true sometime in the past
+node HasHappend(x: bool) returns (y: bool);
+let
+    y = x -> (x or pre y); -- also x or (false -> pre y)
+
+    -- HasHappend in terms of Sofar
+    -- y = not Sofar(not x);
+tel
+
+-- y is true since x was true last time, and x was true since the start up of the program
+node Since(x, y: bool) returns (a: bool);
+let
+    a = x or (y and (false -> pre a));
+tel
+
+-- outputs true when x changes from false to true
+node RisingEdge(x: bool) returns (a: bool);
+let
+    a = not (false -> pre x) and x;
+tel

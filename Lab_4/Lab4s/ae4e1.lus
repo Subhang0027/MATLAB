@@ -1,0 +1,71 @@
+node Counter() returns (a: int);
+let
+    a = 0 -> (pre a +1);
+tel
+
+node RisingEdge(x: bool) returns (a: bool);
+let
+    a = not (false -> pre x) and x;
+tel
+
+node ResetCounter(inc, reset: bool) returns (n: int);
+let
+    -- n = if inc then (if reset then 0 else (pre n +1)) else n;
+    n = if reset then 0 else ((0 -> pre n) + (if inc then 1 else 0));
+tel
+
+node FallingEdge(x: bool) returns (a: bool);
+let
+    a =  (false -> pre x) and not x;
+tel
+
+-------------------------------------------------------------------Problem A----------------------------------------------------
+node Physical_elev (speed,init_position :real) returns(position: real);
+let
+    position = init_position -> speed + pre(position); 
+tel
+--------------------------------------------------------------------Problem B--------------------------------------------------
+node Elev_controller (BF1,BF2,BF3,BF4:bool;position:real) returns (speed : real;door_lamp :bool);
+var floor1,floor2,floor3,floor4,direction : bool;
+var destination_floor : real;
+let 
+    floor1 = false -> if BF1 = true then true else if position = 1.0 and destination_floor = 1.0 then false else pre(floor1);
+    floor2 = false -> if BF1 = true then true else if position = 2.0 and destination_floor = 2.0 then false else pre(floor1);
+    floor3 = false -> if BF1 = true then true else if position = 3.0 and destination_floor = 3.0 then false else pre(floor1);
+    floor4 = false -> if BF1 = true then true else if position = 4.0 and destination_floor = 4.0 then false else pre(floor1);
+
+    destination_floor =  0.0 
+    ->      if pre floor1  then 1.0
+       else if pre floor2 then  2.0 
+       else if pre floor3 then  3.0 
+       else if pre floor4 then  4.0
+       else 0.0;
+    
+    direction = true -> position > destination_floor;
+
+    speed = 0.0 ->
+    if door_lamp = true or destination_floor = 0.0 then 0.0 
+    else if direction then -0.2 
+    else 0.2;
+  
+    door_lamp = if ResetCounter(false -> pre door_lamp,not(false -> pre door_lamp)) > 5 then false 
+    else if (0.0 -> pre  speed) = 0.0 and  position = 1.0 or position = 2.0 or position = 3.0 or position = 4.0 then true 
+    else false -> pre door_lamp;  
+
+tel 
+----------------------------------------------------------------------Problem C---------------------------------------------------
+node Elevator_check(BF1,BF2,BF3,BF4:bool) returns(ok1,ok2:bool);
+var position,speed :real;
+var door_lamp : bool;
+var door_Counter:int;
+let
+    position = Physical_elev(0.0,speed);
+    (speed,door_lamp) = Elev_controller( BF1,BF2,BF3,BF4,0.0 -> pre position);
+    ok1 = door_lamp => position = 1.0 or position = 2.0 or position = 3.0 or position = 4.0;
+
+    door_Counter= ResetCounter(false -> pre door_lamp,not(false -> pre door_lamp));
+    ok2 = true -> if (FallingEdge(door_lamp) and door_Counter >= 5) or not pre door_lamp then true else false; 
+
+    --%PROPERTY ok1;
+    --%PROPERTY ok2;
+tel

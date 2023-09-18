@@ -1,0 +1,29 @@
+
+Creating a new model from the contents of Atomic Subsystem "Chart".
+
+New Model File:D:\Masters\Model Based\Lab_3\sldv_output\Chart\Chart.slx
+
+26-Nov-2022 17:48:40
+Checking compatibility for property proving: model 'Chart'
+Compiling model...done
+Building model representation...done
+
+26-Nov-2022 17:48:45
+'ae3e1/Chart' is compatible for property proving with Simulink Design Verifier.
+
+
+Proving properties using model representation from 26-Nov-2022 17:48:45...
+
+
+26-Nov-2022 17:48:56
+
+Completed normally.
+
+Generating output files:
+
+26-Nov-2022 17:48:57
+Results generation completed.
+
+    Data file:
+    D:\Masters\Model Based\Lab_3\sldv_output\Chart\Chart_sldvdata3.mat
+

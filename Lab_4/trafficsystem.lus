@@ -1,0 +1,111 @@
+-- Traffic light case study
+
+
+node TrafficLight(initRed, toGreen, toRed : bool)
+     returns (red, amber, green : bool);
+var count, adjust : int;
+let
+    count = Sum(adjust);
+    green = count = 0;
+    amber = 0 < count and count < 5;
+    red = count = 5 or (adjust < 0 and count > 0);
+    adjust = (if initRed then 5 else 0)
+            ->
+            if toGreen and (pre count) = 5 then -1
+            else if toRed and (pre count) = 0 then 1
+            else if ((pre count) = 0 or (pre count) = 5) then 0
+            else if pre adjust > 1 then 0 else pre adjust;
+tel
+
+node ReqTrafficLight(initRed, toGreen, toRed : bool)
+     returns (ok1, ok2, ok3 : bool);
+var r, y, g : bool;
+let
+  (g, y, r) = TrafficLight(initRed, toGreen, toRed);
+  ok1 = not (r and g);
+  ok2 = r or y or g;
+  ok3 = Since(r and not y and not g, not toGreen) => r;
+        -- or: (false -> pre (r and not y and not g)) and not toGreen => r;
+tel
+
+node TrafficSystem(carSensor : bool)
+     returns (r1, a1, g1, r2, a2, g2 : bool);
+let
+    -- main road
+  (r1, a1, g1) = TrafficLight(false,
+                            false -> pre RisingEdge(r2),
+                            carSensor);
+    -- side lane
+    -- (r2, a2, g2) = TrafficLight(true,
+    --                        false -> pre RisingEdge(r1),
+    --                        false -> pre ResetCounter(g2, not g2) > 5);
+  --%MAIN;
+  
+  -- Light for side lane
+  -- (r2, a2, g2) = TrafficLight(true,
+  --                             RisingEdge(r1),
+  --                             false -> pre RisingEdge(g1)
+  --                             );
+tel
+
+node ReqTrafficSystem(carSensor : bool) returns (ok1, ok2, ok3 : bool);
+var r1, a1, g1 : bool;
+    r2, a2, g2 : bool;
+let
+  (g1, a1, r1, g2, a2, r2) = TrafficSystem(carSensor);
+
+  -- it never happens that both traffic lights show green
+  ok1 = not (g1 and g2);
+
+  -- if the carSensor does not sense anything, and traffic light 1 is
+  -- green, the traffic light stays green
+  ok2 = Since(g1, not carSensor) => g1;
+
+  -- if the carSensor senses a car, and traffic light 1 is green,
+  -- traffic light 2 will become green within 10 cycles
+  -- (does not work, since carSensor directly after startup, or
+  -- directly after switching to g1 is ignored)
+  ok3 = true; -- SinceNum(g1 and carSensor, not g2) < 10;
+tel
+
+
+
+node ResetCounter(inc, reset : bool) returns (c : int);
+var preC : int;
+let
+  preC = 0 -> pre c;
+  c = if reset then 0
+      else preC + (if inc then 1 else 0);
+tel
+
+node RisingEdge(X : bool) returns (Y : bool);
+let
+  Y = false -> X and not pre(X);
+tel
+
+node Since(X, Y : bool) returns (Z : bool);
+let
+  Z = X or (Y and (false -> pre Z));
+tel
+
+node SinceNum(X, Y : bool) returns (Num : int);
+var Z : bool;
+let
+  Num = if not Z then 0 else (0 -> pre Num) + 1;
+  Z = X or (Y and (false -> pre Z));
+tel
+
+
+
+
+
+
+
+-- x: input stream of numbers
+-- s: sum of x upto current cycle
+node Sum(x: int) returns (s: int);
+let
+    s = (0 -> pre s) + x;
+tel
+
+

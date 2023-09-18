@@ -1,0 +1,341 @@
+
+Creating a new model from the contents of Atomic Subsystem "Chart".
+
+New Model File:D:\Masters\Model Based\Lab_3\sldv_output\Chart\Chart.slx
+
+Model 'ae2e3' is configured for a Variable-step solver. Since Simulink Design Verifier cannot be used with Variable-step solvers, the solver type of the extracted model 'Chart' has been set to Fixed-step discrete with auto step size.
+
+25-Nov-2022 19:39:07
+Checking compatibility for test generation: model 'Chart'
+Compiling model...done
+Building model representation...done
+
+25-Nov-2022 19:39:30
+'ae2e3/Chart' is compatible for test generation with Simulink Design Verifier.
+
+
+Generating tests using model representation from 25-Nov-2022 19:39:30...
+
+SATISFIED
+State "LiftAlgorithm"
+Substate executed "WAIT"
+Analysis Time = 00:00:15
+
+SATISFIED
+Transition "[PressCount>0]{Direction=Qu..." from "WAIT" to "REQUEST_ACCEPTED"
+expression "PressCount>0" true
+Analysis Time = 00:00:15
+
+SATISFIED
+State "ElevatorUnitControl"
+Substate executed "OFF"
+Analysis Time = 00:00:15
+
+SATISFIED
+Transition "[in(LiftAlgorithm.MOTOR_ON)]" from "OFF" to Junction #30
+expression "in(LiftAlgorithm.MOTOR_ON)" false
+Analysis Time = 00:00:15
+
+SATISFIED
+Transition "[Emergency]" from "OFF" to "HALT"
+expression "Emergency" false
+Analysis Time = 00:00:15
+
+SATISFIED
+Transition "[F1_evt&&Floor_1~=1]{Add(1)..." from "RequestWait" to "RequestWait"
+expression "F1_evt&&Floor_1~=1" false
+Analysis Time = 00:00:15
+
+SATISFIED
+Transition "[F3_evt&&Floor_3~=1]{Add(3)..." from "RequestWait" to "RequestWait"
+expression "F3_evt&&Floor_3~=1" true
+Analysis Time = 00:00:15
+
+SATISFIED
+Transition "[F2_evt&&Floor_2~=1]{Add(2)..." from "RequestWait" to "RequestWait"
+expression "F2_evt&&Floor_2~=1" false
+Analysis Time = 00:00:15
+
+SATISFIED
+Chart
+trigger edge occurred false
+Analysis Time = 00:00:15
+
+SATISFIED
+Chart
+trigger edge occurred true
+Analysis Time = 00:00:15
+
+UNSATISFIABLE
+Transition "[Direction==Pos_input]{Dire..." from "REQUEST_ACCEPTED" to "DOOR_WAIT"
+expression "Direction==Pos_input" false
+Analysis Time = 00:00:16
+
+UNSATISFIABLE
+Transition "[Direction==0]" from "DOOR_DONE" to Junction #6
+expression "Direction==0" false
+Analysis Time = 00:00:16
+
+SATISFIED
+Transition "[F1_evt&&Floor_1~=1]{Add(1)..." from "RequestWait" to "RequestWait"
+expression "F1_evt&&Floor_1~=1" true
+Analysis Time = 00:00:33
+
+SATISFIED
+State "LiftAlgorithm"
+Substate executed "REQUEST_ACCEPTED"
+Analysis Time = 00:00:33
+
+SATISFIED
+Transition "[Direction~=Pos_input]" from "REQUEST_ACCEPTED" to "MOTOR_ON"
+expression "Direction~=Pos_input" false
+Analysis Time = 00:00:33
+
+SATISFIED
+Transition "[Direction==Pos_input]{Dire..." from "REQUEST_ACCEPTED" to "DOOR_WAIT"
+expression "Direction==Pos_input" true
+Analysis Time = 00:00:33
+
+SATISFIED
+Transition "[pos == 1]" from Junction #19 to Junction #14
+expression "pos == 1" true
+Analysis Time = 00:00:33
+
+SATISFIED
+Transition "[F2_evt&&Floor_2~=1]{Add(2)..." from "RequestWait" to "RequestWait"
+expression "F2_evt&&Floor_2~=1" true
+Analysis Time = 00:00:33
+
+SATISFIED
+State "LiftAlgorithm"
+Substate executed "DOOR_WAIT"
+Analysis Time = 00:00:34
+
+SATISFIED
+Transition "[after(5,sec)]" from "DOOR_WAIT" to "DOOR_DONE"
+expression "after(5,sec)" false
+Analysis Time = 00:00:34
+
+SATISFIED
+State "ElevatorUnitControl"
+Substate executed "HALT"
+Analysis Time = 00:00:34
+
+SATISFIED
+Transition "[F4_evt&&Floor_4~=1]{Add(4)..." from "RequestWait" to "RequestWait"
+expression "F4_evt&&Floor_4~=1" false
+Analysis Time = 00:00:34
+
+SATISFIED
+Transition "[Start]" from "HALT" to "OFF"
+expression "Start" false
+Analysis Time = 00:00:34
+
+SATISFIED
+Transition "[Emergency]" from "OFF" to "HALT"
+expression "Emergency" true
+Analysis Time = 00:00:34
+
+SATISFIED
+Transition "[F3_evt&&Floor_3~=1]{Add(3)..." from "RequestWait" to "RequestWait"
+expression "F3_evt&&Floor_3~=1" false
+Analysis Time = 00:00:34
+
+SATISFIED
+Transition "[F4_evt&&Floor_4~=1]{Add(4)..." from "RequestWait" to "RequestWait"
+expression "F4_evt&&Floor_4~=1" true
+Analysis Time = 00:00:34
+
+SATISFIED
+State "LiftAlgorithm"
+Substate executed "REQUEST_ACCEPTED"
+Analysis Time = 00:00:35
+
+SATISFIED
+Transition "[Direction~=Pos_input]" from "REQUEST_ACCEPTED" to "MOTOR_ON"
+expression "Direction~=Pos_input" false
+Analysis Time = 00:00:35
+
+SATISFIED
+Transition "[Direction==Pos_input]{Dire..." from "REQUEST_ACCEPTED" to "DOOR_WAIT"
+expression "Direction==Pos_input" true
+Analysis Time = 00:00:35
+
+SATISFIED
+Transition "[pos == 1]" from Junction #19 to Junction #14
+expression "pos == 1" true
+Analysis Time = 00:00:35
+
+SATISFIED
+Transition "[F2_evt&&Floor_2~=1]{Add(2)..." from "RequestWait" to "RequestWait"
+expression "F2_evt&&Floor_2~=1" true
+Analysis Time = 00:00:35
+
+SATISFIED
+State "LiftAlgorithm"
+Substate executed "MOTOR_ON"
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[Direction~=Pos_input]" from "REQUEST_ACCEPTED" to "MOTOR_ON"
+expression "Direction~=Pos_input" true
+Analysis Time = 00:00:37
+
+SATISFIED
+State "ElevatorUnitControl"
+Substate executed "GO_DOWN"
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[Emergency]" from "GO_DOWN" to Junction #32
+expression "Emergency" false
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[~in(LiftAlgorithm.MOTOR_ON)]" from "GO_DOWN" to "OFF"
+expression "~in(LiftAlgorithm.MOTOR_ON)" false
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[Direction<Pos_input]" from Junction #30 to "GO_DOWN"
+expression "Direction<Pos_input" true
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[in(LiftAlgorithm.MOTOR_ON)]" from "OFF" to Junction #30
+expression "in(LiftAlgorithm.MOTOR_ON)" true
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[abs(indx-1.0)<0.1||abs(ind..." from Junction #8 to Junction #10
+expression "abs(indx-1.0)<0.1||abs(indx-2.0)<0.1||abs(indx-3.0)<0.1||abs(indx-4.0)<0.1" false
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[1==ValidFloor(Pos_input)&&..." from "MOTOR_ON" to "REQUESTED_FLOOR_FOUND"
+expression "1==ValidFloor(Pos_input)&&1==any(Queue(:)==round(Pos_input))" false
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[PressCount>0]{Direction=Qu..." from "WAIT" to "REQUEST_ACCEPTED"
+expression "PressCount>0" false
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[Direction>Pos_input]" from Junction #30 to Junction #31
+expression "Direction>Pos_input" true
+Analysis Time = 00:00:37
+
+SATISFIED
+Transition "[Direction<Pos_input]" from Junction #30 to "GO_DOWN"
+expression "Direction<Pos_input" false
+Analysis Time = 00:00:37
+
+SATISFIED
+State "ElevatorUnitControl"
+Substate executed "GO_UP"
+Analysis Time = 00:02:14
+
+SATISFIED
+Transition "[Emergency]" from "GO_UP" to Junction #33
+expression "Emergency" true
+Analysis Time = 00:02:14
+
+SATISFIED
+Transition "[abs(indx-1.0)<0.1||abs(ind..." from Junction #8 to Junction #10
+expression "abs(indx-1.0)<0.1||abs(indx-2.0)<0.1||abs(indx-3.0)<0.1||abs(indx-4.0)<0.1" true
+Analysis Time = 00:02:14
+
+SATISFIED
+Transition "[pos == 3]" from Junction #21 to Junction #28
+expression "pos == 3" false
+Analysis Time = 00:02:43
+
+SATISFIED
+Transition "[pos == 1]" from Junction #19 to Junction #14
+expression "pos == 1" false
+Analysis Time = 00:02:43
+
+SATISFIED
+Transition "[pos == 4]" from Junction #20 to Junction #17
+expression "pos == 4" true
+Analysis Time = 00:02:43
+
+SATISFIED
+Transition "[pos == 2]" from Junction #26 to Junction #11
+expression "pos == 2" false
+Analysis Time = 00:02:43
+
+SATISFIED
+Transition "[1==ValidFloor(Pos_input)&&..." from "MOTOR_ON" to "REQUESTED_FLOOR_FOUND"
+expression "1==ValidFloor(Pos_input)&&1==any(Queue(:)==round(Pos_input))" true
+Analysis Time = 00:03:12
+
+SATISFIED
+Transition "[pos == 3]" from Junction #21 to Junction #28
+expression "pos == 3" true
+Analysis Time = 00:03:43
+
+SATISFIED
+State "LiftAlgorithm"
+Substate executed "REQUESTED_FLOOR_FOUND"
+Analysis Time = 00:04:14
+
+SATISFIED
+Transition "[abs(Direction-Pos_input)<0..." from "REQUESTED_FLOOR_FOUND" to "DOOR_WAIT"
+expression "abs(Direction-Pos_input)<0.1" false
+Analysis Time = 00:04:14
+
+SATISFIED
+Transition "[~in(LiftAlgorithm.MOTOR_ON)]" from "GO_DOWN" to "OFF"
+expression "~in(LiftAlgorithm.MOTOR_ON)" true
+Analysis Time = 00:04:14
+
+SATISFIED
+Transition "[abs(Direction-Pos_input)<0..." from "REQUESTED_FLOOR_FOUND" to "DOOR_WAIT"
+expression "abs(Direction-Pos_input)<0.1" true
+Analysis Time = 00:04:44
+
+SATISFIED
+Transition "[Emergency]" from "GO_UP" to Junction #33
+expression "Emergency" false
+Analysis Time = 00:04:44
+
+SATISFIED
+Transition "[~in(LiftAlgorithm.MOTOR_ON)]" from "GO_UP" to "OFF"
+expression "~in(LiftAlgorithm.MOTOR_ON)" true
+Analysis Time = 00:04:44
+
+SATISFIED
+Transition "[pos == 2]" from Junction #26 to Junction #11
+expression "pos == 2" true
+Analysis Time = 00:05:14
+
+SATISFIED
+Transition "[Start]" from "HALT" to "OFF"
+expression "Start" true
+Analysis Time = 00:05:38
+
+SATISFIED
+Transition "[~in(LiftAlgorithm.MOTOR_ON)]" from "GO_UP" to "OFF"
+expression "~in(LiftAlgorithm.MOTOR_ON)" false
+Analysis Time = 00:05:38
+
+SATISFIED
+Transition "[Emergency]" from "GO_DOWN" to Junction #32
+expression "Emergency" true
+Analysis Time = 00:06:05
+
+
+25-Nov-2022 20:39:24
+
+Test generation was stopped.
+
+Generating output files:
+
+25-Nov-2022 20:39:30
+Results generation completed.
+
+    Data file:
+    D:\Masters\Model Based\Lab_3\sldv_output\Chart\Chart_sldvdata.mat
+

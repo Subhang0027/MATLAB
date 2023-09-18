@@ -1,0 +1,25 @@
+ kind2 v1.7.0
+
+
+
+=================================================================================================================================================
+[1mAnalyzing [34m[34mElevator_check[39m[39m[22m
+  with First top: '[34mElevator_check[39m'
+             subsystems
+               | concrete: [34mResetCounter[39m, [34mPhysical_elev[39m, [34mFallingEdge[39m, [34mElev_controller[39m
+
+[1m<[92mSuccess[39m>[22m Property [94mok1[39m is valid by inductive step after 0.113s.
+
+[1m<[92mSuccess[39m>[22m Property [94mok2[39m is valid by inductive step after 0.207s.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+[1mSummary of properties[22m:
+-------------------------------------------------------------------------------------------------------------------------------------------------
+[94mok2[39m: [92mvalid (at 8)[39m
+[94mok1[39m: [92mvalid (at 2)[39m
+=================================================================================================================================================
+
+[1m<[36mNote[39m>[22m System [34mRisingEdge[39m has no property, skipping verification step.
+
+[1m<[36mNote[39m>[22m System [34mCounter[39m has no property, skipping verification step.
+

@@ -1,0 +1,33 @@
+
+26-Nov-2022 17:45:10
+Validating cached model representation from 26-Nov-2022 17:37:00...change detected
+
+26-Nov-2022 17:45:10
+Checking compatibility for property proving: model 'ae3e1'
+Compiling model...done
+Building model representation...done
+
+26-Nov-2022 17:45:18
+'ae3e1' is compatible for property proving with Simulink Design Verifier.
+
+
+Proving properties using model representation from 26-Nov-2022 17:45:18...
+
+VALID UNDER APPROXIMATION
+Verification Subsystem/Proof Objective
+Objective: T
+Analysis Time = 00:00:09
+
+
+26-Nov-2022 17:45:29
+
+Completed normally.
+
+Generating output files:
+
+26-Nov-2022 17:45:30
+Results generation completed.
+
+    Data file:
+    D:\Masters\Model Based\Lab_3\sldv_output\ae3e1\ae3e1_sldvdata2.mat
+

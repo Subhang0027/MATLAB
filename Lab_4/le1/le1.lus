@@ -1,0 +1,85 @@
+
+-- 10 is time limit to return to defualt so, counter starts at 10 and resets to 0
+node ResetCounter(reset: bool) returns (n: int);
+let
+    n = if reset then 0 else ((10 -> pre n) + 1);
+tel
+
+-- outputs true when x changes from false to true
+node RisingEdge(x: bool) returns (a: bool);
+let
+    a = not (true -> pre x) and x;
+tel
+
+-- outputs true when x changes from true to false
+node FallingEdge(x: bool) returns (a: bool);
+let
+    a = (false -> pre x) and not x;
+tel
+
+-- y is true only if x was true sometime in the past
+node HasHappend(x: bool) returns (y: bool);
+let
+    y = x -> (x or pre y); -- also x or (false -> pre y)
+
+    -- HasHappend in terms of Sofar
+    -- y = not Sofar(not x);
+tel
+
+-- One Traffic Light
+node TrafficLight(initRed, toGreen, toRed: bool) returns (green, amber, red: bool);
+var chgRed: bool;
+let
+    chgRed = initRed -> (toRed and not toGreen); -- a variable to decide red light
+
+    -- delayed red by a step so that after change from red to green is detected, amber can be lit together with red
+    red = initRed -> (pre chgRed);  
+    amber = FallingEdge(chgRed);
+    green = not red;
+tel
+
+-- Traffic light system
+node TSystem(carSensor: bool) returns (g1, a1, r1, g2, a2, r2: bool)
+var tl: bool;
+var n: int;
+let
+    n = ResetCounter(carSensor); -- time since car is detected
+    tl = true -> (n > 10); -- true by default and false for 10 steps after car is detected
+    (g1, a1, r1) = TrafficLight(false, tl, not tl); -- light 1
+    (g2, a2, r2) = TrafficLight(true, not tl, tl); -- light2
+tel
+
+-- Synchronous observer for the traffic light node
+node ReqTrafficLight (initRed, toGreen, toRed: bool) returns (ok1, ok2, ok3: bool);
+var green, amber, red, preRed, preAmber: bool;
+let
+    (green, amber, red) = TrafficLight(initRed, toGreen, toRed);
+    
+    preRed = initRed -> pre red;
+    preAmber = false -> pre amber;
+
+    -- no red and green at the same time
+    ok1 = green => not red;
+    -- some signal is always shown
+    ok2 = green or amber or red;
+    -- before switching to green both amber and red are lit
+    ok3 = RisingEdge(green) => preRed and preAmber;
+    --%PROPERTY ok1;
+    --%PROPERTY ok2;
+    --%PROPERTY ok3;
+tel
+
+node ReqTSystem(carSensor: bool) returns (ok1, ok2: bool);
+var g1, a1, r1, g2, a2, r2: bool;
+let
+    (g1, a1, r1, g2, a2, r2) = TSystem(carSensor);
+
+    -- the signals do not both show green at the same time
+    ok1 = g1 => not g2;
+
+    -- signal is turned green after car is detected
+    ok2 = g2 => HasHappend(carSensor);
+
+    --%PROPERTY ok1;
+    --%PROPERTY ok2;
+tel
